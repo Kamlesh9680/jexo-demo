@@ -1,0 +1,358 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.page-wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #121622 !important;
+    height: 100vh;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+        monospace;
+}
+
+.page-container2 {
+    padding: 0 1rem !important;
+    width: 480px;
+    height: 100%;
+    background-color: #121622 !important;
+    overflow-y: scroll;
+    position: relative;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+    padding-bottom: 80px !important;
+}
+
+.page-container2::-webkit-scrollbar {
+    display: none;
+}
+
+.header-fix {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #1A202E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.header-fix h2 {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 400;
+    font-size: 18px;
+}
+
+.today-income-boxes {
+    padding-top: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: .8rem;
+}
+
+.today-income-box {
+    width: 49%;
+    height: fit-content;
+    background-color: #1A202E;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.today-income-box i {
+    margin-right: 10px;
+}
+
+.today-income-box p {
+    color: #c4c4c4;
+    margin-bottom: .5rem;
+}
+
+.today-income-box h3 {
+    font-weight: 500;
+    font-size: 22px;
+    color: #fff;
+}
+
+
+
+.benefit-analysis-wrapper {
+    background-color: #1A202E;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.benefit-analysis-wrapper h4 {
+    font-weight: 400;
+    color: #fff;
+    margin-bottom: 1rem;
+}
+
+.benefit-color-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.benefit-color {
+    width: 50%;
+    margin-bottom: 10px;
+}
+
+.benefit-color h5 {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.benefit-color .benefit-color-span {
+    height: 15px !important;
+    width: 20px !important;
+    background-color: green;
+    border-radius: 2px;
+    display: inline-block;
+}
+
+.benefit-color p {
+    color: #c4c4c4 !important;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+.team-list-btn-wrapper {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.team-list-btn-wrapper button {
+    background: linear-gradient(270deg, #0571fd, #7b02fe 100%, #7b02fe 0);
+    color: #fff;
+    border: none;
+    padding: 1rem;
+    font-size: 17px;
+    font-weight: 400;
+    width: 100% !important;
+    border-radius: 50px;
+}
+
+.team-members-wrapper {
+    background-color: #1A202E;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.team-member-boxes {
+    border-bottom: 1px solid #585757;
+    margin-bottom: .5rem;
+}
+
+.team-member-boxes h6 {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.team-member-box {
+    display: flex;
+    align-items: center;
+    padding: 1rem 0 .5rem 0;
+}
+
+.member-box {
+    width: 33%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #c4c4c4;
+}
+
+.member-box h5{
+    font-weight: 400;
+    font-size: 16px;
+    margin-bottom: .35rem;
+}
+
+.member-box p{
+    font-size: 14px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.container {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.circular-chart {
+    position: relative;
+    width: 175px;
+    height: 175px;
+    border-radius: 50%;
+    background-color: gray;
+    overflow: hidden;
+}
+
+/* Segment for Rating Income */
+.rating-segment {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    clip-path: polygon(50% 50%, 100% 0, 100% 50%);
+    background-color: #007bff;
+    transform-origin: center;
+    transition: transform 0.3s ease-in-out;
+    border-radius: 50%;
+}
+
+.rating-segment:hover {
+    transform: scale(1.2);
+    z-index: 2;
+}
+
+/* Segment for Team Income */
+.team-segment {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    clip-path: polygon(50% 50%, 100% 50%, 50% 100%);
+    background-color: #6c63ff;
+    transform-origin: center;
+    transition: transform 0.3s ease-in-out;
+    border-radius: 50%;
+
+}
+
+.team-segment:hover {
+    transform: scale(1.2);
+    z-index: 2;
+}
+
+/* Segment for Investment Income */
+.investment-segment {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    clip-path: polygon(50% 50%, 50% 100%, 0 50%);
+    background-color: #ff9800;
+    transform-origin: center;
+    transition: transform 0.3s ease-in-out;
+    border-radius: 50%;
+
+}
+
+.investment-segment:hover {
+    transform: scale(1.2);
+    z-index: 2;
+}
+
+/* Inner circle */
+.circle-inner {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-color: #111;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+}
+
+/* Tooltip */
+.tooltip {
+    display: none;
+    color: white;
+    font-size: 1rem;
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+}
+
+.segment:hover .tooltip {
+    display: block;
+}
+
+.benefit-info {
+    margin-top: 20px;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.color-box {
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+    border-radius: 3px;
+}
+
+.color-rating {
+    background-color: #007bff;
+}
+
+.color-team {
+    background-color: #6c63ff;
+}
+
+.color-investment {
+    background-color: #ff9800;
+}

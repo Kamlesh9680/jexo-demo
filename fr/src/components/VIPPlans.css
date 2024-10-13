@@ -1,0 +1,214 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.page-wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #121622 !important;
+    height: 100vh;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+        monospace;
+}
+
+.page-container2 {
+    padding: 0 1rem !important;
+    width: 480px;
+    height: 100%;
+    background-color: #121622;
+    overflow-y: scroll;
+    position: relative;
+}
+
+.page-container2::-webkit-scrollbar {
+    display: none;
+}
+
+.header-fix {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #1A202E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.header-fix h2 {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 400;
+    font-size: 18px;
+}
+
+.header-fix i {
+    position: absolute;
+    left: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 24px;
+    font-weight: 500;
+    color: #fff;
+}
+
+.earning-boxes-wrapper {
+    margin-top: 5rem;
+    background-color: #1A202E;
+    padding: .75rem;
+    border-radius: 8px;
+    padding-bottom: 1.2rem;
+    margin-bottom: .75rem;
+}
+
+.earning-boxes-wrapper h3 {
+    color: #fff;
+    font-weight: 400;
+    font-size: 16px;
+    margin-bottom: .75rem;
+}
+
+.earning-boxes {
+    display: flex;
+    align-items: center;
+    padding: 0 .5rem;
+}
+
+.earning-box {
+    width: 50%;
+    padding: 1rem;
+    background-color: #121622;
+    border-radius: 8px 0 0 8px;
+    border-right: 1px solid #797979;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.earning-box:nth-child(2) {
+    border-radius: 0 8px 8px 0;
+    border: none !important;
+}
+
+.earning-box h6 {
+    font-weight: 400;
+    font-size: 17px;
+    color: #fff;
+    margin-bottom: .45rem;
+}
+
+.earning-box p {
+    font-size: 14px;
+    color: #c4c4c4;
+}
+
+.team-members-wrapper {
+    border-radius: 8px;
+}
+
+.team-member-boxes {
+    background-color: #1A202E;
+    margin-bottom: .8rem;
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.team-member-boxes h6 {
+    color: #fff;
+    font-size: 17px;
+    font-weight: 400;
+}
+
+.team-member-boxes h6::before {
+    content: '\F3C1';
+    font-family: Remixicon;
+    font-size: 12px;
+    margin-right: 8px;
+    background: linear-gradient(270deg, #0571fd, #7b02fe 100%, #7b02fe 0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.gr-txt {
+    background: linear-gradient(270deg, #0571fd, #7b02fe 100%, #7b02fe 0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.team-member-box {
+    display: flex;
+    align-items: center;
+    padding: .75rem 0 .5rem 0;
+}
+
+.member-box {
+    width: 33%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #c4c4c4;
+}
+
+.member-box .gr-txt span {
+    font-size: 12px;
+}
+
+.member-box h5 {
+    font-weight: 400;
+    font-size: 18px;
+    color: #fff;
+    margin-bottom: .35rem;
+}
+
+.member-box p {
+    font-size: 14px;
+}
+
+.membership-wrapper .mheading {
+    color: #fff;
+    font-weight: 500;
+    margin-bottom: .8rem;
+}
+
+.team-list-btn-wrapper {
+    width: 100%;
+    margin: .75rem 0 .25rem 0;
+}
+
+.team-list-btn-wrapper button {
+    background: linear-gradient(270deg, #0571fd, #7b02fe 100%, #7b02fe 0);
+    color: #fff;
+    border: none;
+    padding: .8rem 1rem;
+    font-size: 15px;
+    font-weight: 500;
+    width: 100% !important;
+    border-radius: 50px;
+
+}

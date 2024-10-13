@@ -1,0 +1,72 @@
+body {
+    background-color: gray;
+}
+
+.invite-page {
+    margin-top: 5rem;
+}
+
+.header h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.qr-section {
+    text-align: center;
+    height: 400px;
+    margin-bottom: 30px;
+    background: url(/public/qr-bg.png);
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    padding: 3rem 0;
+}
+
+.qr-section h3 {
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 6px;
+}
+
+.invite-code {
+    display: flex !important;
+    align-items: center !important;
+    margin-top: 10px;
+}
+
+.invite-code span {
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.invite-code button {
+    background-color: transparent;
+    color: #4a90e2;
+    border: none;
+    cursor: pointer;
+}
+
+.invite-link-section {
+    text-align: center;
+    background-color: #1A202E;
+    padding: 1rem;
+    border-radius: 8px;
+    color: #c4c4c4;
+}
+
+
+.invite-link a {
+    color: #c4c4c4;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+.invite-link button {
+    background-color: transparent;
+    color: #c4c4c4;
+    border: none;
+    cursor: pointer;
+    margin-left: 10px;
+}
