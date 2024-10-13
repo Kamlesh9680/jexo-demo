@@ -31,6 +31,7 @@ const authRoutes = require('./routes/authRoutes');
 const planRoutes = require('./routes/planRoutes');
 const recordRoutes = require('./routes/recordRoutes');
 const userDetailsRoute = require('./routes/userDetails'); 
+// const userEarnRoute = require('./routes/fetchUserEarn'); 
 const authController = require('./controllers/authController');
 
 app.use('/api/auth', authRoutes);
@@ -38,7 +39,8 @@ app.post('/api/auth/send-verification', authController.sendVerificationCode);
 app.use('/api/plans', planRoutes);
 app.use('/api/records', recordRoutes);
 app.use('/api', require('./routes/UpdateRoutes')); 
-// app.use('/api', userDetailsRoute);
+app.use('/api', userDetailsRoute);
+// app.use('/api', userEarnRoute);
 
 // Start server
 const PORT = process.env.PORT || 5000;

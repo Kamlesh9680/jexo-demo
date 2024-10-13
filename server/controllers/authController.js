@@ -2,7 +2,7 @@ const User = require('../models/User');
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-
+const UserPayments = require('../models/UserPayments');
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -104,29 +104,41 @@ const registerUser = async (req, res) => {
 };
 
 const loginUser = async (req, res) => {
-  const { email, username, password } = req.body; // Include username in the request body
+  const { email, username, password } = req.body;
 
   try {
-    // Find user by email or username based on which field is provided
+    // Find user by email or username
     const user = await User.findOne({
-      $or: [{ email }, { username }] // Search for user by email or username
+      $or: [{ email }, { username }]
     });
-
 
     if (!user) return res.status(400).json({ msg: 'Invalid credentials' });
 
     // Compare password
     const isMatch = await bcrypt.compare(password, user.password);
-
     if (!isMatch) return res.status(400).json({ msg: 'Invalid credentials' });
+
+    // Find user's membership or payment details (Adjust according to your schema)
+    const membership = await UserPayments.findOne({ userId: user.userId });
 
     // Generate JWT token
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.json({ token });
+
+    // Return user, membership info, and token
+    res.json({
+      token,
+      user: {
+        id: user.userId,
+        username: user.username,
+        email: user.email,
+      },
+      membership: membership.vipLevel || null // Return membership if found, or null if not
+    });
   } catch (error) {
     console.error('Error during login:', error.message);
     res.status(500).send('Server error');
   }
 };
+
 
 module.exports = { registerUser, loginUser, sendVerificationCode };
