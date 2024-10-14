@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { QRCodeCanvas } from 'qrcode.react';
 import { useNavigate } from "react-router-dom";
 import '../index.css';
@@ -9,8 +9,21 @@ const InvitePage = () => {
     const goBack = () => {
         navigate(-1);
     };
-    const [inviteCode] = useState('5X7R12');
-    const inviteLink = `https://example.vip/user/reg/?inviteCode=${inviteCode}`;
+
+    const [inviteCode, setInviteCode] = useState('');
+
+    useEffect(() => {
+        // Retrieve user object from localStorage
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (user && user.inviteCode) {
+            setInviteCode(user.inviteCode);
+        } else {
+            // Handle case where invite code is missing or user not found
+            setInviteCode('Please try again later');
+        }
+    }, []);
+
+    const inviteLink = `https://jexo.vip/user/reg/?inviteCode=${inviteCode}`;
 
     const copyToClipboard = (text) => {
         navigator.clipboard.writeText(text);

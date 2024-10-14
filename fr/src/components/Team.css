@@ -162,6 +162,7 @@ code {
     font-weight: 400;
     width: 100% !important;
     border-radius: 50px;
+    margin-bottom: .7rem;
 }
 
 .team-members-wrapper {

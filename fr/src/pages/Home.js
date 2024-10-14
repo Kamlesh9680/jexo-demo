@@ -6,7 +6,7 @@ import Navbar from '../components/BottomNav';
 
 function Home() {
   const images = [
-    "../nike.jpeg",
+    "/shoes/demo.jpg",
     "/shoes/adidas-box.jpg",
     "/shoes/puma-box.jpg",
     "/shoes/skech-box.jpg",
@@ -59,7 +59,7 @@ function Home() {
           </div>
         </div>
         <div className="main-boxes-wrapper">
-          <h2>Heading</h2>
+          <h2>Top Collection</h2>
           <div className="main-boxes">
             {images.map((image, index) => (
               <div className="main-box">

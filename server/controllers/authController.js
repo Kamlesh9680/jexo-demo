@@ -65,7 +65,7 @@ const sendVerificationCode = async (req, res) => {
 
 
 const registerUser = async (req, res) => {
-  const { username, email, password, confirmPassword, mobile, inviteCode, acceptPolicy } = req.body;
+  const { username, email, password, confirmPassword, mobile, invitedFrom, acceptPolicy } = req.body;
 
   try {
     // Check if user already exists
@@ -87,7 +87,7 @@ const registerUser = async (req, res) => {
       email,
       password: hashedPassword,
       mobile,
-      inviteCode,
+      invitedFrom,
       acceptPolicy,
     });
 
@@ -131,8 +131,9 @@ const loginUser = async (req, res) => {
         id: user.userId,
         username: user.username,
         email: user.email,
+        inviteCode: user.inviteCode
       },
-      membership: membership.vipLevel || null // Return membership if found, or null if not
+      membership: membership ? membership.vipLevel : null // Return membership if found, or null if not
     });
   } catch (error) {
     console.error('Error during login:', error.message);

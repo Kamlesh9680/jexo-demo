@@ -4,10 +4,12 @@ const userPaymentSchema = new mongoose.Schema({
     userId: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     memberpoint: { type: Number, default: 0 },
+    ratingIncome: { type: Number, default: 0 },
+    teamIncome: { type: Number, default: 0 },
     vipLevel: String,
     price: Number,
     transactionId: String,
-    status: String, // success or pending
+    status: String, 
     paymentMethod: String,
     createdAt: { type: Date, default: Date.now }
 });

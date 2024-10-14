@@ -21,11 +21,6 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/team" element={<Team />} />
-          <Route path="/membership" element={<Membership />} />
-          <Route path="/records" element={<Records />} />
-          <Route path="/invite-friend" element={<InviteFriend />} />
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/login" element={<LoginForm />} />
           {/* <Route path="/nav" element={<Navbar />} /> */}
@@ -33,6 +28,10 @@ function App() {
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/invite-friend" element={<InviteFriend />} />
+            <Route path="/team" element={<Team />} />
+            <Route path="/membership" element={<Membership />} />
+            <Route path="/records" element={<Records />} />
             <Route path="/user-kyc" element={<KYCForm />} />
             <Route path="/login-password" element={<LoginPassword />} />
             <Route path="/transaction-password" element={<TradePassword />} />

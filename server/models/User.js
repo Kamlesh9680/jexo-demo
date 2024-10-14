@@ -6,27 +6,47 @@ const UserSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   mobile: { type: String, required: true },
-  inviteCode: { type: String },
+  inviteCode: { type: String, unique: true },
+  invitedFrom: { type: String },
   acceptPolicy: { type: Boolean, required: true },
   userId: { type: String, unique: true } 
 });
 
-// Pre-save hook to generate unique 7-digit userId
+// Helper function to generate a 6-character alphanumeric invite code
+const generateInviteCode = () => {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let inviteCode = '';
+  for (let i = 0; i < 6; i++) {
+    inviteCode += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return inviteCode;
+};
+
+// Pre-save hook to generate unique userId and inviteCode
 UserSchema.pre('save', async function (next) {
   if (this.isNew) {
+    // Generate unique userId
     let userId;
     let userExists = true;
-
-    // Generate a 7-digit userId and ensure it's unique
     while (userExists) {
-      userId = Math.floor(1000000 + Math.random() * 9000000).toString(); // Generate a 7-digit number
+      userId = Math.floor(1000000 + Math.random() * 9000000).toString(); // Generate 7-digit number
       const existingUser = await mongoose.models.User.findOne({ userId });
       if (!existingUser) {
         userExists = false; // Break loop if no user with this userId exists
       }
     }
-
     this.userId = userId;
+
+    // Generate unique inviteCode
+    let inviteCodeExists = true;
+    while (inviteCodeExists) {
+      const inviteCode = generateInviteCode();
+      const existingCode = await mongoose.models.User.findOne({ inviteCode });
+      if (!existingCode) {
+        this.inviteCode = inviteCode; // Assign the unique inviteCode
+        inviteCodeExists = false;
+      }
+    }
   }
   next();
 });

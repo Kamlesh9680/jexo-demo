@@ -41,6 +41,7 @@ app.use('/api/records', recordRoutes);
 app.use('/api', require('./routes/UpdateRoutes')); 
 app.use('/api', userDetailsRoute);
 // app.use('/api', userEarnRoute);
+require('./jobs/resetRateCountJob');
 
 // Start server
 const PORT = process.env.PORT || 5000;

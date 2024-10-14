@@ -118,6 +118,8 @@ code {
 
 .main-boxes-wrapper h2 {
   margin-bottom: .8rem;
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .main-boxes {

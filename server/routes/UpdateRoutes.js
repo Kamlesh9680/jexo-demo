@@ -9,14 +9,14 @@ router.post('/update-earnings', async (req, res) => {
   try {
     const result = await userPaymentSchema.updateOne(
       { userId: userId },
-      { $inc: { memberpoint: earnings } }
+      { $inc: { ratingIncome: earnings } }
     );
 
     // If no user record found, create a new one
     if (result.matchedCount === 0) {
       const newUserPayment = new userPaymentSchema({
         userId: userId,
-        memberpoint: earnings,
+        ratingIncome: earnings,
       });
 
       await newUserPayment.save();
@@ -69,7 +69,7 @@ router.get('/ratings/today/:userId', async (req, res) => {
   }
 });
 
-router.get('/memberpoint/:userId', async (req, res) => {
+router.get('/ratingincome/:userId', async (req, res) => {
   try {
     const userId = req.params.userId;
     const userPayment = await userPaymentSchema.findOne({ userId }); // Find the user payment document
@@ -79,7 +79,8 @@ router.get('/memberpoint/:userId', async (req, res) => {
       return res.status(404).json({ message: 'User payment not found' });
     }
 
-    res.json({ memberPoint: userPayment.memberpoint });
+    // console.log(userPayment.ratingIncome)
+    res.json(userPayment);
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }

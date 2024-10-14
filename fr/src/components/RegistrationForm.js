@@ -11,7 +11,7 @@ const RegistrationForm = () => {
     mobile: '',
     password: '',
     confirmPassword: '',
-    inviteCode: '',
+    invitedFrom: '',
     acceptPolicy: false,
   });
 
@@ -224,8 +224,8 @@ const RegistrationForm = () => {
               <input
                 type="text"
                 className="input"
-                name="inviteCode"
-                value={formData.inviteCode}
+                name="invitedFrom"
+                value={formData.invitedFrom}
                 onChange={handleInputChange}
                 placeholder="Invitation Code"
               />

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Import Link from react-router-dom
+import { Link, useNavigate } from 'react-router-dom';
 import '../components/Profile.css';
 import Navbar from '../components/BottomNav';
 
 const Profile = () => {
-  const [memberPoint, setMemberPoint] = useState(0); // State to store member points
+  const [memberPoint, setMemberPoint] = useState(0); 
   const userData = JSON.parse(localStorage.getItem('user'));
   const navigate = useNavigate();
   const userId = userData.id;
@@ -12,12 +12,12 @@ const Profile = () => {
   useEffect(() => {
     const fetchMemberPoint = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/memberpoint/${userId}`);
+        const response = await fetch(`http://localhost:5000/api/ratingincome/${userId}`);
         if (!response.ok) {
           throw new Error('Failed to fetch member points');
         }
         const data = await response.json();
-        setMemberPoint(data.memberPoint);
+        setMemberPoint(data.ratingIncome);
         console.log(memberPoint); // Update state with fetched member point
       } catch (error) {
         console.error(error);
