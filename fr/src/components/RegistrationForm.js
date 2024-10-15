@@ -109,7 +109,7 @@ const RegistrationForm = () => {
       // Set success message and redirect to home page
       setSuccess('Registration successful! Redirecting...');
       setTimeout(() => {
-        navigate('/');  // Redirect to the homepage after success
+        navigate('/');  
       }, 2000);
 
     } catch (err) {

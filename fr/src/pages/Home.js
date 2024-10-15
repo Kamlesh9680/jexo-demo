@@ -1,8 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "../components/Home.css";
-// import "../components/BottomNav.css";
 import Navbar from '../components/BottomNav';
+import "../components/Home.css";
 
 function Home() {
   const images = [

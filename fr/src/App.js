@@ -20,13 +20,13 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Routes>
+        <Routes basename="/client">
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/login" element={<LoginForm />} />
           {/* <Route path="/nav" element={<Navbar />} /> */}
-          <Route path="/product/:id" element={<Product />} />
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<Home />} />
+            <Route path="/product/:id" element={<Product />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/invite-friend" element={<InviteFriend />} />
             <Route path="/team" element={<Team />} />

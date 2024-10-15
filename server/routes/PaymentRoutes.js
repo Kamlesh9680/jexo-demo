@@ -1,61 +1,45 @@
 const express = require('express');
 const router = express.Router();
+const axios = require('axios');
 
-
-router.post('/api/purchase-vip', async (req, res) => {
-    const { userId, vipLevel, price } = req.body;
-
-    // Simulate the start of a Tether (USDT) payment
+// In your backend route (e.g., payment.js)
+router.post('/create-payment', async (req, res) => {
     try {
-        // Trigger the payment gateway for Tether (integrate real payment API here)
-        const transactionId = await initiateTetherPayment(userId, price); // function to integrate with the payment provider
+        const { amount, currency, userId, vipLevel } = req.body;
 
-        // Create a new payment record in MongoDB
-        const newPayment = new UserPayment({
-            userId,
-            vipLevel,
-            price,
-            transactionId,
-            status: 'pending', // Initial status
-            paymentMethod: 'Tether'
+        const response = await axios.post(`${CRYPTOMUS_API_URL}/create_payment`, {
+            amount,
+            currency,
+            order_id: crypto.randomBytes(12).toString("hex")
+        }, {
+            headers: {
+                'Authorization': `Bearer ${API_KEY}`
+            }
         });
 
-        await newPayment.save();
-
-        // Respond with transaction details
-        res.json({ success: true, transactionId, message: 'Payment initiated. Awaiting confirmation.' });
+        // Assuming Cryptomus returns a payment URL in the response
+        res.json({ success: true, paymentUrl: response.data.paymentUrl, transactionId: response.data.transactionId });
     } catch (error) {
-        console.error('Payment initiation error:', error);
-        res.status(500).json({ success: false, message: 'Error initiating payment' });
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Error creating payment' });
     }
 });
 
-router.post('/api/payment-webhook', async (req, res) => {
-    const { txn_id, status } = req.body;
-
-    if (status === '100') { // Payment success code for CoinPayments
-        const payment = await UserPayment.findOneAndUpdate(
-            { transactionId: txn_id },
-            { status: 'success' }
-        );
-        if (payment) {
-            res.json({ success: true, message: 'Payment confirmed.' });
-        } else {
-            res.status(404).json({ success: false, message: 'Payment record not found.' });
-        }
-    } else {
-        res.status(400).json({ success: false, message: 'Payment failed or pending.' });
-    }
-});
-
-router.get('/api/check-payment-status/:transactionId', async (req, res) => {
+// Assuming you have a route for checking payment status
+router.get('/check-payment-status/:transactionId', async (req, res) => {
     const { transactionId } = req.params;
-    const payment = await UserPayment.findOne({ transactionId });
 
-    if (payment) {
-        res.json({ success: true, status: payment.status });
-    } else {
-        res.status(404).json({ success: false, message: 'Payment not found' });
+    try {
+        const response = await axios.get(`${CRYPTOMUS_API_URL}/payment_status/${transactionId}`, {
+            headers: {
+                'Authorization': `Bearer ${API_KEY}`
+            }
+        });
+
+        res.json({ success: true, status: response.data.status });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Error fetching payment status' });
     }
 });
 

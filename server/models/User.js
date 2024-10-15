@@ -2,14 +2,15 @@ const mongoose = require('mongoose');
 
 // Define the user schema
 const UserSchema = new mongoose.Schema({
-  username: { type: String, required: true, unique: true },
-  email: { type: String, required: true, unique: true },
+  username: { type: String, required: true},
+  userId: { type: String, unique: true },
+  email: { type: String, required: true},
   password: { type: String, required: true },
   mobile: { type: String, required: true },
   inviteCode: { type: String, unique: true },
   invitedFrom: { type: String },
   acceptPolicy: { type: Boolean, required: true },
-  userId: { type: String, unique: true } 
+  createdAt: { type: Date, default: Date.now }
 });
 
 // Helper function to generate a 6-character alphanumeric invite code

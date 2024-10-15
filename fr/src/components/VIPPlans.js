@@ -4,35 +4,35 @@ import '../components/VIPPlans.css';
 import Navbar from '../components/BottomNav';
 
 const VIPPlans = () => {
-  const navigate = useNavigate(); // Hook for navigation
-  const [selectedPlan, setSelectedPlan] = useState(null); // State to track selected VIP plan
+  const navigate = useNavigate();
+  const [selectedPlan, setSelectedPlan] = useState(null);
 
   // Function to go back
   const goBack = () => {
-    navigate(-1); 
+    navigate(-1);
   };
 
   const handleSelectPlan = async (vip) => {
     try {
-      const response = await fetch('/api/purchase-vip', {
+      const userId = JSON.parse(localStorage.getItem('user')).id;
+
+      // Create a payment request with Cryptomus
+      const paymentResponse = await fetch('http://lcoalhost:5000/api/create-payment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: '12345', vipLevel: vip.level, price: vip.price })
+        body: JSON.stringify({
+          amount: vip.price,
+          currency: 'USDT', // Change this if you want to allow other currencies
+          userId: userId,  // Include the user's ID
+          vipLevel: vip.level
+        })
       });
 
-      const result = await response.json();
+      const paymentResult = await paymentResponse.json();
 
-      if (result.success) {
-        // Polling for payment confirmation
-        const checkPayment = setInterval(async () => {
-          const paymentStatus = await fetch(`/api/check-payment-status/${result.transactionId}`);
-          const paymentResult = await paymentStatus.json();
-
-          if (paymentResult.success && paymentResult.status === 'success') {
-            clearInterval(checkPayment);
-            alert(`VIP Plan ${vip.level} successfully purchased!`);
-          }
-        }, 5000); // Check every 5 seconds
+      if (paymentResult.success) {
+        // Redirect the user to the payment URL provided by Cryptomus
+        window.location.href = paymentResult.paymentUrl; // Redirect to the payment URL
       } else {
         alert('Error initiating payment.');
       }
@@ -41,6 +41,7 @@ const VIPPlans = () => {
       alert('An error occurred. Please try again.');
     }
   };
+
 
 
   return (

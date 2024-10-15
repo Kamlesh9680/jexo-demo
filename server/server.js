@@ -27,6 +27,11 @@ app.use(session({
     cookie: { secure: false } // Set to true if using https
 }));
 
+
+
+
+
+
 const authRoutes = require('./routes/authRoutes');
 const planRoutes = require('./routes/planRoutes');
 const recordRoutes = require('./routes/recordRoutes');

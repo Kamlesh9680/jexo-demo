@@ -1,8 +1,11 @@
+const mongoose = require('mongoose');
 const User = require('../models/User');
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const UserPayments = require('../models/UserPayments');
+const UserDailyInfo = require('../models/userDailyInfo');
+
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -67,6 +70,10 @@ const sendVerificationCode = async (req, res) => {
 const registerUser = async (req, res) => {
   const { username, email, password, confirmPassword, mobile, invitedFrom, acceptPolicy } = req.body;
 
+  // Start a session for transaction
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
   try {
     // Check if user already exists
     let user = await User.findOne({ email });
@@ -81,7 +88,7 @@ const registerUser = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create new user instance
+    // Create a new user instance
     user = new User({
       username,
       email,
@@ -91,17 +98,81 @@ const registerUser = async (req, res) => {
       acceptPolicy,
     });
 
-    // Save user to the database
-    await user.save();
+    // Save user to the User model
+    await user.save({ session });
+
+    // Create a record in the UserPayment model
+    const userPayment = new UserPayments({
+      userId: user.userId, // Link to the new user
+      email,
+      memberpoint: 0,
+      ratingIncome: 0,
+      teamIncome: 0,
+      totalteamMembers: 0,
+      teamMemberData: {},
+      vipLevel: 'none', // Default VIP level
+      price: 0, // Default initial value
+      transactionId: '', // Can be updated when payment occurs
+      status: 'pending', // Default status
+      paymentMethod: '', // Will be set during payment
+    });
+
+    await userPayment.save({ session });
+
+    // Create a record in the UserDailyInfo model
+    const userDailyInfo = new UserDailyInfo({
+      userId: user.userId, // Link to the new user
+      email, // Use the user's email
+      rateCount: 0, // Default values
+    });
+
+    await userDailyInfo.save({ session });
+
+    // Referral logic: If invitedFrom exists, update inviter’s info
+    if (invitedFrom) {
+      const inviter = await User.findOne({ inviteCode: invitedFrom });
+      console.log("t func enter");
+
+      if (inviter) {
+        const inviterPayment = await UserPayments.findOne({ userId: inviter.userId });
+
+        if (inviterPayment) {
+          // Increment total team members for the inviter
+          inviterPayment.totalteamMembers += 1;
+          console.log("t func team 1 done");
+
+          // Add the new user's details to teamMemberData
+          inviterPayment.teamMemberData.set(user.userId, {
+            userId: user.userId,
+            registrationDate: new Date(),
+          });
+
+          // Save the updated inviter's payment info
+          await inviterPayment.save({ session });
+          console.log("t func team save");
+
+        }
+      }
+    }
+
+    // Commit the transaction
+    await session.commitTransaction();
+    session.endSession();
 
     // Create and return JWT token
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
     res.json({ token });
+
   } catch (error) {
+    // Rollback in case of error
+    await session.abortTransaction();
+    session.endSession();
+
     console.error(error.message);
     res.status(500).send('Server error');
   }
 };
+
 
 const loginUser = async (req, res) => {
   const { email, username, password } = req.body;

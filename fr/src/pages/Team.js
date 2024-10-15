@@ -3,13 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import '../components/Team.css';
 import Navbar from '../components/BottomNav';
 
-
 function Team() {
     const userData = JSON.parse(localStorage.getItem('user'));
     const userId = userData.id;
     const [ratingIncome, setratingIncome] = useState(0);
     const [teamIncome, setteamIncome] = useState(0);
     const [todayIncome, setTodayIncome] = useState(0);
+    const [mainteamMember, setmainTeamMember] = useState(0);
+    const [teamMembers, setTeamMembers] = useState([]);
+    const [totalMembers, setTotalMembers] = useState(0);
+    const [addedToday, setAddedToday] = useState(0);
+    const [addedLastWeek, setAddedLastWeek] = useState(0);
+    const [addedThisWeek, setAddedThisWeek] = useState(0);
 
     useEffect(() => {
         const fetchRatingIncome = async () => {
@@ -20,9 +25,18 @@ function Team() {
                 }
                 const data = await response.json();
 
-                // Assuming data is the full userPayment object, set state accordingly
-                setratingIncome(data.ratingIncome); // Set ratingIncome from response
-                setteamIncome(data.teamIncome);     // Set teamIncome from response (if present)
+                console.log("Fetched data:", data); // Log the entire response data
+
+                // Convert teamMemberData from object to array
+                const members = Object.values(data.teamMemberData || {}); // Get an array of member objects
+                setratingIncome(data.ratingIncome);
+                setteamIncome(data.teamIncome);
+                setmainTeamMember(data.totalteamMembers);
+                setTeamMembers(members);
+                setTotalMembers(members.length); // Total members
+
+                // Process teamMemberData to count added members
+                countAddedMembers(members);
 
                 const totalIncome = (data.ratingIncome || 0) + (data.teamIncome || 0);
                 setTodayIncome(totalIncome);
@@ -34,7 +48,53 @@ function Team() {
         fetchRatingIncome();
     }, [userId]);
 
+    const countAddedMembers = (members) => {
+        if (!Array.isArray(members)) {
+            console.warn('members is not an array:', members);
+            return; // Exit if members is not an array
+        }
+    
+        console.log("Members array:", members); // Log members array
+    
+        const today = new Date();
+        const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + 1)); // Start of this week (Monday)
+        const startOfLastWeek = new Date(startOfWeek); 
+        startOfLastWeek.setDate(startOfLastWeek.getDate() - 7); // Start of last week
+    
+        let todayCount = 0;
+        let lastWeekCount = 0;
+        let thisWeekCount = 0;
+    
+        members.forEach(member => {
+            const registrationDate = new Date(member.registrationDate);
+            console.log(`Member registration date: ${registrationDate}`); // Log registration date for each member
+    
+            // Check if added today
+            if (isSameDay(registrationDate, new Date())) {
+                todayCount++;
+                thisWeekCount++; // Also count today in this week
+            } else if (registrationDate >= startOfWeek) {
+                // Check if added this week (but not today)
+                thisWeekCount++;
+            } else if (registrationDate >= startOfLastWeek && registrationDate < startOfWeek) {
+                // Check if added last week
+                lastWeekCount++;
+            }
+        });
+    
+        console.log(`Counts - Today: ${todayCount}, This Week: ${thisWeekCount}, Last Week: ${lastWeekCount}`); // Log the counts
+    
+        setAddedToday(todayCount);
+        setAddedThisWeek(thisWeekCount);
+        setAddedLastWeek(lastWeekCount);
+    };
+    
 
+    const isSameDay = (date1, date2) => {
+        return date1.getFullYear() === date2.getFullYear() &&
+            date1.getMonth() === date2.getMonth() &&
+            date1.getDate() === date2.getDate();
+    };
 
     return (
         <div className="page-wrapper">
@@ -54,20 +114,6 @@ function Team() {
                 </div>
                 <div className="benefit-analysis-wrapper">
                     <h4>Benefit Analysis</h4>
-                    {/* <div className="container">
-                        <div className="circular-chart">
-                            <div className="segment rating-segment">
-                                <span className="tooltip">Rating Income: 0</span>
-                            </div>
-                            <div className="segment team-segment">
-                                <span className="tooltip">Team Income: 0</span>
-                            </div>
-                            <div className="segment investment-segment">
-                                <span className="tooltip">Investment Income: 0</span>
-                            </div>
-                            <div className="circle-inner">0</div>
-                        </div>
-                    </div> */}
                     <div className="benefit-color-wrapper">
                         <div className="benefit-color">
                             <p>Rating Income</p>
@@ -77,10 +123,6 @@ function Team() {
                             <p>Team Income</p>
                             <h5>{typeof teamIncome === 'object' ? JSON.stringify(teamIncome) : teamIncome}</h5>
                         </div>
-                        {/* <div className="benefit-color">
-                            <p>Investment Income</p>
-                            <h5>0</h5>
-                        </div> */}
                     </div>
                 </div>
                 <div className="team-list-btn-wrapper">
@@ -88,19 +130,19 @@ function Team() {
                 </div>
                 <div className="team-members-wrapper">
                     <div className="team-member-boxes">
-                        <h6>Total Team Members: 0</h6>
+                        <h6>Total Team Members: {typeof mainteamMember === 'object' ? JSON.stringify(mainteamMember) : mainteamMember}</h6>
                         <div className="team-member-box">
                             <div className="member-box">
-                                <h5>0</h5>
+                                <h5>{addedToday}</h5>
                                 <p>Today added</p>
                             </div>
                             <div className="member-box">
-                                <h5>0</h5>
-                                <p>Last week added</p>
+                                <h5> {addedThisWeek}</h5>
+                                <p>This week added</p>
                             </div>
                             <div className="member-box">
-                                <h5>0</h5>
-                                <p>This week added</p>
+                                <h5> {addedLastWeek}</h5>
+                                <p>Last week added</p>
                             </div>
                         </div>
                     </div>
@@ -123,23 +165,6 @@ function Team() {
                     </div>
                     <div className="team-member-boxes">
                         <h6>Second Generation</h6>
-                        <div className="team-member-box">
-                            <div className="member-box">
-                                <h5>0</h5>
-                                <p>Total Members</p>
-                            </div>
-                            <div className="member-box">
-                                <h5>0</h5>
-                                <p>Total Income</p>
-                            </div>
-                            <div className="member-box">
-                                <h5>0</h5>
-                                <p>Today Income</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="team-member-boxes" style={{ borderBottom: 'none', marginBottom: 0 }}>
-                        <h6>Third Generation</h6>
                         <div className="team-member-box">
                             <div className="member-box">
                                 <h5>0</h5>

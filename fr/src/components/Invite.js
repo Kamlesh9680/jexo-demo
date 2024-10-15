@@ -23,7 +23,7 @@ const InvitePage = () => {
         }
     }, []);
 
-    const inviteLink = `https://jexo.vip/user/reg/?inviteCode=${inviteCode}`;
+    const inviteLink = `https://example.vip/register/?inviteCode=${inviteCode}`;
 
     const copyToClipboard = (text) => {
         navigator.clipboard.writeText(text);
